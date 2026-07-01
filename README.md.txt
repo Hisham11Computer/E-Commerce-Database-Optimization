@@ -15,14 +15,15 @@ Engineered strategic Single-Column & Composite Indexes (idx_orders_status) that 
 
 Documented performance benchmarks and query execution path alterations (Before vs. After optimization states).
 
+
 ### 📊 Performance Benchmarks & Execution Plans
 
 #### ❌ Before Optimization (Full Table Scan)
 As shown below, querying the unindexed `orders` table forced a **Full Table Scan**, reading over 199K rows sequentially, leading to high I/O cost and degraded performance:
 
-![Before Optimization](Before optimization states.png)
+![Before Optimization](before_optimization.png)
 
 #### 🟢 After Optimization (Index Lookup)
 After implementing the strategic `idx_orders_status` index, the execution path successfully shifted to a highly efficient **Non-Unique Key Lookup**:
 
-![After Optimization](After optimization states.png)
+![After Optimization](after_optimization.png)
