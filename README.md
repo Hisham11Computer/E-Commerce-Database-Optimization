@@ -21,7 +21,8 @@ Documented performance benchmarks and query execution path alterations (Before v
 #### ❌ Before Optimization (Full Table Scan)
 As shown below, querying the unindexed `orders` table forced a **Full Table Scan**, reading over 199K rows sequentially, leading to high I/O cost and degraded performance:
 
-![Before Optimization](before_optimization.png)
+![Before Optimization](<img width="840" height="317" alt="before_optimization" src="https://github.com/user-attachments/assets/548d2dcc-ef0b-4a85-8e2b-8f47048f721b" />
+)
 
 #### 🟢 After Optimization (Index Lookup)
 After implementing the strategic `idx_orders_status` index, the execution path successfully shifted to a highly efficient **Non-Unique Key Lookup**:
