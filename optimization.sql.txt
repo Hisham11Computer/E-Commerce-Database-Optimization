@@ -1,0 +1,20 @@
+USE ecommerce_performance;
+
+select  category , sum(quantity * unit_price) as total_revenue
+from order_items
+join products  ON order_items.product_id = products.product_id
+join orders  ON order_items.order_id = orders.order_id 
+
+WHERE 
+    status = 'Completed'
+    group by category 
+    order by total_revenue DESC ;
+    
+
+create index idx_orders_status
+on orders(status) ;
+
+
+create index idx_order_items_composite
+on order_items (order_id, product_id, quantity, unit_price) ; 
+    
