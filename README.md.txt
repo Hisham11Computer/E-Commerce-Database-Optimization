@@ -15,7 +15,6 @@ Engineered strategic Single-Column & Composite Indexes (idx_orders_status) that 
 
 Documented performance benchmarks and query execution path alterations (Before vs. After optimization states).
 
-
 ### 📊 Performance Benchmarks & Execution Plans
 
 #### ❌ Before Optimization (Full Table Scan)
