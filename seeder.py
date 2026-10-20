@@ -1,0 +1,63 @@
+import mysql.connector
+from faker import Faker
+import random
+from datetime import datetime, timedelta
+
+# Connect to MySQL Database
+db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="YOUR_PASSWORD_HERE", # Replace with your MySQL root password
+    database="ecommerce_performance"
+)
+cursor = db.cursor()
+fake = Faker()
+
+print("Starting data seeding process... This might take a few minutes.")
+
+# 1. Seed 10,000 Users
+print("Seeding Users...")
+users_data = [(fake.user_name(), fake.email()) for _ in range(10000)]
+cursor.executemany("INSERT INTO users (username, email) VALUES (%s, %s)", users_data)
+db.commit()
+
+# 2. Seed 5,000 Products
+print("Seeding Products...")
+categories = ['Electronics', 'Clothing', 'Home', 'Books', 'Beauty']
+products_data = [(fake.catch_phrase(), random.choice(categories), round(random.uniform(10, 1000), 2), random.randint(10, 500)) for _ in range(5000)]
+cursor.executemany("INSERT INTO products (product_name, category, price, stock) VALUES (%s, %s, %s, %s)", products_data)
+db.commit()
+
+# 3. Seed 200,000 Orders and 400,000+ Order Items
+print("Seeding Orders and Order Items...")
+start_date = datetime.now() - timedelta(days=365)
+
+for i in range(2000): # Seed in batches for optimal performance
+    orders_batch = []
+    items_batch = []
+    
+    for _ in range(100):
+        user_id = random.randint(1, 10000)
+        order_date = fake.date_time_between(start_date=start_date, end_date='now')
+        status = random.choice(['Completed', 'Pending', 'Cancelled'])
+        orders_batch.append((user_id, order_date, 0.0, status))
+        
+    cursor.executemany("INSERT INTO orders (user_id, order_date, total_amount, status) VALUES (%s, %s, %s, %s)", orders_batch)
+    db.commit()
+    
+    last_id = cursor.lastrowid
+    
+    for j in range(100):
+        current_order_id = last_id + j
+        for _ in range(random.randint(1, 3)):
+            product_id = random.randint(1, 5000)
+            quantity = random.randint(1, 5)
+            unit_price = round(random.uniform(10, 500), 2)
+            items_batch.append((current_order_id, product_id, quantity, unit_price))
+            
+    cursor.executemany("INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES (%s, %s, %s, %s)", items_batch)
+    db.commit()
+
+print("Data seeding completed successfully!")
+cursor.close()
+db.close()
