@@ -3,7 +3,6 @@ E-Commerce Database Performance Optimization & Index Engineering
 
 [![CI](https://github.com/Hisham11Computer/E-Commerce-Database-Optimization/actions/workflows/ci.yml/badge.svg)](https://github.com/Hisham11Computer/E-Commerce-Database-Optimization/actions)
 
-
 💻 Tech Stack:
 MySQL, Python (Faker, MySQL-Connector), Execution Plan Analysis (Visual Explain).
 
@@ -24,9 +23,9 @@ Documented performance benchmarks and query execution path alterations (Before v
 #### ❌ Before Optimization (Full Table Scan)
 As shown below, querying the unindexed `orders` table forced a **Full Table Scan**, reading over 199K rows sequentially, leading to high I/O cost and degraded performance:
 
-![Before Optimization](Before optimization.png)
+![Before Optimization](Before_optimization.png)
 
 #### 🟢 After Optimization (Index Lookup)
 After implementing the strategic `idx_orders_status` index, the execution path successfully shifted to a highly efficient **Non-Unique Key Lookup**:
 
-![After Optimization](After optimization.png)
+![After Optimization](After_optimization.png)
